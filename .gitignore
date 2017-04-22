@@ -1,3 +1,5 @@
 debug
-launch.json
+**/launch.json
 **/node_modules/
+**/*.exe
+**/*.dll
