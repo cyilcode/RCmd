@@ -3,14 +3,15 @@ package main
 import (
 	"net/http"
 
-	"fmt"
-
 	"github.com/gorilla/mux"
 )
 
+const webPath = "./web/public/"
+const port = ":8080"
+
 func main() {
 	router := mux.NewRouter()
-	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./web/public/")))
+	router.PathPrefix("/").Handler(http.FileServer(http.Dir(webPath)))
 	http.Handle("/", router)
-	fmt.Println(http.ListenAndServe(":8080", router))
+	http.ListenAndServe(port, router)
 }
