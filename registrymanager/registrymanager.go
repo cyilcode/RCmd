@@ -27,16 +27,22 @@ type RegistryHandler struct {
 
 // ReadAllKeys reads and wraps the data read from the Windows Registry
 func (registryHandler RegistryHandler) ReadAllKeys() []string {
-	registryKey, err := registry.OpenKey(registry.LOCAL_MACHINE, keyPath, registry.ALL_ACCESS)
-	if err != nil {
-		log.Fatal(err)
-	}
-
+	registryKey := openAppPathKey()
 	defer registryKey.Close()
+
 	names, err := registryKey.ReadSubKeyNames(allKeys)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	return names
+}
+
+func openAppPathKey() registry.Key {
+	registryKey, err := registry.OpenKey(registry.LOCAL_MACHINE, keyPath, registry.ALL_ACCESS)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return registryKey
 }
