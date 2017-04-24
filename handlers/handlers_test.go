@@ -5,7 +5,7 @@ import "net/http"
 import "net/http/httptest"
 import "github.com/cyilcode/RCmd/handlers"
 
-import "fmt"
+import "github.com/stretchr/testify/assert"
 
 type testManager struct{}
 
@@ -20,5 +20,5 @@ func TestGetRegistryItems(t *testing.T) {
 	r, _ := http.NewRequest("GET", "/api/registryitems", nil)
 	w := httptest.NewRecorder()
 	handlers.GetRegistryItems(w, r)
-	fmt.Println(w.Body.ReadString(0))
+	assert.NotEmpty(t, w.Body)
 }
