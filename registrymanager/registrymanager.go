@@ -3,6 +3,8 @@ package registrymanager
 import (
 	"log"
 
+	"fmt"
+
 	"golang.org/x/sys/windows/registry"
 )
 
@@ -19,13 +21,14 @@ type RegistryItem struct {
 // RegistryManager is the interface for Windows Registry interaction functionality
 type RegistryManager interface {
 	ReadAllKeys() []string
+	ReadAllKeyAndValues() []RegistryItem
 }
 
 // RegistryHandler is a concrete implementation of RegistryManager interface
 type RegistryHandler struct {
 }
 
-// ReadAllKeys reads and wraps the data read from the Windows Registry
+// ReadAllKeys reads returns the keys in Windows Registry
 func (registryHandler RegistryHandler) ReadAllKeys() []string {
 	registryKey := openAppPathKey()
 	defer registryKey.Close()
@@ -38,8 +41,31 @@ func (registryHandler RegistryHandler) ReadAllKeys() []string {
 	return names
 }
 
-func openAppPathKey() registry.Key {
-	registryKey, err := registry.OpenKey(registry.LOCAL_MACHINE, keyPath, registry.ALL_ACCESS)
+// ReadAllKeyAndValues reads and wraps the data read from the Windows Registry
+func (registryHandler RegistryHandler) ReadAllKeyAndValues() []RegistryItem {
+	registryKey := openAppPathKey()
+	defer registryKey.Close()
+
+	names, err := registryKey.ReadSubKeyNames(allKeys)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for i := 0; i < len(names); i++ {
+		subKey := openAppPathKey(names[i])
+		fmt.Println(subKey.GetStringValue(""))
+	}
+
+	return nil
+}
+
+func openAppPathKey(params ...string) registry.Key {
+	fullPath := keyPath
+	if len(params) > 0 {
+		fullPath = fmt.Sprintf(`%s\%s`, keyPath, params[0])
+	}
+
+	registryKey, err := registry.OpenKey(registry.LOCAL_MACHINE, fullPath, registry.ALL_ACCESS)
 	if err != nil {
 		log.Fatal(err)
 	}
