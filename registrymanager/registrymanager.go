@@ -13,14 +13,13 @@ const allKeys = -1
 
 // RegistryItem is a data wrapper struct for the keys from Windows Registry
 type RegistryItem struct {
-	key    string
-	value  string
-	isRcmd bool
+	Key    string
+	Value  string
+	IsRcmd bool
 }
 
 // RegistryManager is the interface for Windows Registry interaction functionality
 type RegistryManager interface {
-	ReadAllKeys() []string
 	ReadAllKeyAndValues() []RegistryItem
 }
 
@@ -28,38 +27,37 @@ type RegistryManager interface {
 type RegistryHandler struct {
 }
 
-// ReadAllKeys reads returns the keys in Windows Registry
-func (registryHandler RegistryHandler) ReadAllKeys() []string {
-	registryKey := openAppPathKey()
-	defer registryKey.Close()
-
-	names, err := registryKey.ReadSubKeyNames(allKeys)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return names
-}
-
 // ReadAllKeyAndValues reads and wraps the data read from the Windows Registry
 func (registryHandler RegistryHandler) ReadAllKeyAndValues() []RegistryItem {
-	registryKey := openAppPathKey()
+	registryKey, err := openAppPathKey()
 	defer registryKey.Close()
 
+	var registryItems []RegistryItem
 	names, err := registryKey.ReadSubKeyNames(allKeys)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	for i := 0; i < len(names); i++ {
-		subKey := openAppPathKey(names[i])
-		fmt.Println(subKey.GetStringValue(""))
+		subKey, err := openAppPathKey(names[i])
+		if err == nil {
+			subKeyValue, _, err := subKey.GetStringValue("")
+			if err == nil {
+				item := RegistryItem{
+					IsRcmd: false,
+					Key:    names[i],
+					Value:  subKeyValue,
+				}
+
+				registryItems = append(registryItems, item)
+			}
+		}
 	}
 
-	return nil
+	return registryItems
 }
 
-func openAppPathKey(params ...string) registry.Key {
+func openAppPathKey(params ...string) (*registry.Key, error) {
 	fullPath := keyPath
 	if len(params) > 0 {
 		fullPath = fmt.Sprintf(`%s\%s`, keyPath, params[0])
@@ -67,8 +65,9 @@ func openAppPathKey(params ...string) registry.Key {
 
 	registryKey, err := registry.OpenKey(registry.LOCAL_MACHINE, fullPath, registry.ALL_ACCESS)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(`Couldn't access key`, params[0])
+		return nil, err
 	}
 
-	return registryKey
+	return &registryKey, nil
 }

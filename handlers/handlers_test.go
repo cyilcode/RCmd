@@ -1,18 +1,25 @@
 package handlers_test
 
-import "testing"
-import "net/http"
-import "net/http/httptest"
-import "github.com/cyilcode/RCmd/handlers"
+import (
+	"encoding/json"
+	"net/http"
+	"net/http/httptest"
+	"testing"
 
-import "github.com/stretchr/testify/assert"
-import "encoding/json"
+	"github.com/cyilcode/RCmd/handlers"
+	"github.com/cyilcode/RCmd/registrymanager"
+	"github.com/stretchr/testify/assert"
+)
 
 type testManager struct{}
 
-var readAllKeysData = []string{"test", "function"}
+var readAllKeysData = []registrymanager.RegistryItem{registrymanager.RegistryItem{
+	Key:    "test",
+	Value:  "testValue",
+	IsRcmd: true,
+}}
 
-func (tm testManager) ReadAllKeys() []string {
+func (tm testManager) ReadAllKeyAndValues() []registrymanager.RegistryItem {
 	return readAllKeysData
 }
 
