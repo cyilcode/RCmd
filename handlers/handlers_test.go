@@ -13,7 +13,7 @@ import (
 
 type testManager struct{}
 
-var readAllKeysData = []registrymanager.RegistryItem{registrymanager.RegistryItem{
+var readAllKeysData = []registrymanager.RegistryItem{{
 	Key:    "test",
 	Value:  "testValue",
 	IsRcmd: true,
