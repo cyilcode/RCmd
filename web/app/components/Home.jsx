@@ -1,16 +1,17 @@
 import React from 'react';
+import RegistryList from 'registry-list'
 
 let Home = React.createClass({
     render: function () {
         return (
-            <div>
-                <h3>REACT WORKS !</h3>
-                <div className="alert alert-success" role="alert">
-                    <strong>And bootstrap works too !</strong> You successfully read this important alert message.
+            <div className="container" style={{marginTop: '3rem'}}>
+                <div className="row">
+                    <RegistryList />
                 </div>
-                <button type="button" className="btn btn-primary">Primary</button>
+                <div className="row">
+		            <button type="button" className="btn btn-outline-success btn-block" data-toggle="modal" data-target="#myModal">Add a new command</button>
+		        </div>
             </div>
-
         );
     }
 });

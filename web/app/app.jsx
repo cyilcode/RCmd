@@ -1,8 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import * as actions from 'actions';
+import axios from 'axios';
 import Home from 'Home';
 
+let store = require('configureStore').configure();
+axios.get('http://localhost:8080/api/registryitems').then((response) => {
+  store.dispatch(actions.setRegistryItems(response.data))
+});
+
 ReactDOM.render(
-  <Home />,
+  <Provider store={store}>
+    <Home />
+  </Provider>,
   document.getElementById('app')
 );

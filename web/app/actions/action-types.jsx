@@ -1,0 +1,1 @@
+export const SET_REGISTRY_ITEMS = 'SET_REGISTRY_ITEMS';
