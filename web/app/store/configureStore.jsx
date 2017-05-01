@@ -1,7 +1,7 @@
 import * as redux from 'redux';
 import { registryItemsReducer } from 'reducers';
 
-export let configure = (initialState = {}) => {
+export let configureStore = (initialState = {}) => {
     let reducer = redux.combineReducers({
         registryItems: registryItemsReducer
     });

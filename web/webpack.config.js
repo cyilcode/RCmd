@@ -6,7 +6,7 @@ module.exports = {
     './app/app.jsx'
   ],
   externals: {
-    jquery: 'jQuery'
+    jquery: 'jQuery',
   },
   plugins: [
     new webpack.ProvidePlugin({
@@ -25,7 +25,8 @@ module.exports = {
       './app/components',
       './app/actions',
       './app/reducers',
-      './app/store'
+      './app/store',
+      './app/modals'
     ],
     alias: {
       applicationStyles: 'app/styles/app.scss'
@@ -41,6 +42,10 @@ module.exports = {
         },
         test: /\.jsx?$/,
         exclude: /(node_modules|bower_components)/
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
       }
     ]
   },
