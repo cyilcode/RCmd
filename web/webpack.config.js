@@ -26,7 +26,8 @@ module.exports = {
       './app/actions',
       './app/reducers',
       './app/store',
-      './app/modals'
+      './app/modals',
+      './app/api'
     ],
     alias: {
       applicationStyles: 'app/styles/app.scss'

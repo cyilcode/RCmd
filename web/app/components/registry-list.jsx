@@ -1,13 +1,12 @@
 import React from 'react';
-import RegistryItem from 'registry-item'
-import { connect } from 'react-redux';
+import RegistryItem from 'registry-item';
 
-class RegistryList extends React.Component {
+export default class RegistryList extends React.Component {
     render() {
         let { registryItems } = this.props;
-        let mapTodos = () => {
-            if (registryItems.length === 0) {
-                <RegistryItem key='No key' Key='No key' Value='Found' />
+        let mapItems = () => {
+            if (registryItems === undefined) {
+                return <RegistryItem key='No key' Key='No key' Value='No Found' />;
             }
 
             return registryItems.map((item, i) => {
@@ -28,15 +27,9 @@ class RegistryList extends React.Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {mapTodos()}
+                    {mapItems()}
                 </tbody>
             </table>
         );
     }
 };
-
-export default connect((state) => {
-    return {
-        registryItems: state.registryItems
-    };
-})(RegistryList);

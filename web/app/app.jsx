@@ -5,11 +5,10 @@ import * as actions from 'actions';
 import axios from 'axios';
 import Home from 'Home';
 import { configureStore } from 'configureStore';
+import * as API from 'registry-api';
 
 let store = configureStore();
-axios.get('http://localhost:8080/api/registryitems').then((response) => {
-  store.dispatch(actions.setRegistryItems(response.data))
-});
+API.getRegistryItems(store);
 
 ReactDOM.render(
   <Provider store={store}>
