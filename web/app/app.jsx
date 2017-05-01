@@ -1,10 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import * as actions from 'actions';
-import axios from 'axios';
+import {Provider} from 'react-redux';
 import Home from 'Home';
-import { configureStore } from 'configureStore';
+import {configureStore} from 'configureStore';
 import * as API from 'registry-api';
 
 let store = configureStore();

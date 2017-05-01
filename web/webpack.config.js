@@ -6,7 +6,13 @@ module.exports = {
     './app/app.jsx'
   ],
   externals: {
-    jquery: 'jQuery',
+    'jsdom': 'window',
+    'cheerio': 'window',
+    'react/addons': true,
+    'react-dom/test-utils': true,
+    'react/lib/ReactContext': 'window',
+    'react-test-renderer/shallow': true,
+    'react/lib/ExecutionEnvironment': true
   },
   plugins: [
     new webpack.ProvidePlugin({
