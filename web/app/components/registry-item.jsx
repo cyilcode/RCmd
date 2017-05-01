@@ -16,5 +16,3 @@ export default class RegistryItem extends React.Component {
 		);
 	}
 };
-
-module.exports = RegistryItem;
